@@ -8,10 +8,8 @@
     "WYSIWYG"
   ],
   "dependencies": {
-    "ckeditor5-core": "ckeditor/ckeditor5-core",
-    "requirejs": "Reinmar/requirejs"
-  },
-  "devDependencies": {
+    "ckeditor5-core": "ckeditor/ckeditor5-core#jenkins",
+    "requirejs": "Reinmar/requirejs",
     "almond": "^0.3.0",
     "babel-core": "^6.4.0",
     "babel-plugin-transform-es2015-modules-amd": "^6.1.18",
