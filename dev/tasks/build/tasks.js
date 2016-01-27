@@ -90,12 +90,12 @@ module.exports = ( config ) => {
 			packages( watch ) {
 				// Find all CKEditor5 package directories. Resolve symlinks so we watch real directories
 				// in order to workaround https://github.com/paulmillr/chokidar/issues/419.
-				const dirs = fs.readdirSync( path.join( config.ROOT_DIR, 'node_modules' ) )
+				const dirs = fs.readdirSync( path.join( config.ROOT_DIR, '..' ) )
 					// Look for ckeditor5-* directories.
 					.filter( ( fileName ) => fileName.indexOf( 'ckeditor5-' ) === 0 )
 					// Resolve symlinks and keep only directories.
 					.map( ( fileName ) => {
-						let filePath = path.join( config.ROOT_DIR, 'node_modules', fileName );
+						let filePath = path.join( config.ROOT_DIR, '..', fileName );
 						let stat = fs.lstatSync( filePath );
 
 						if ( stat.isSymbolicLink() ) {
