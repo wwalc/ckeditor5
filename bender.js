@@ -9,6 +9,7 @@ const config = {
 		'benderjs-mocha',
 		'benderjs-promise',
 		'benderjs-sinon',
+		'benderjs-reporter-junit',
 		'dev/bender/plugins/ckeditor5'
 	],
 
@@ -41,6 +42,10 @@ const config = {
 			'dist/amd/tests/**/_*/*.js',
 			'!dist/amd/ckeditor5/*/lib/**'
 		]
+	},
+
+	jUnitReporter: {
+		outputFile: 'test-results/result.xml'
 	}
 };
 
