@@ -80,9 +80,13 @@ export default class Editable {
 	bindTo( domElement ) {
 		const editingView = this.editor.editing.view;
 		const viewElement = editingView.createRoot( domElement, this.name );
+		const modelElement = this.editor.document.getRoot( this.name );
 
+		this.modelElement = modelElement;
 		this.domElement = domElement;
 		this.viewElement = viewElement;
+
+		this.editor.editing.mapper.bindElements( modelElement, viewElement );
 
 		// Move to EditingController constructor.
 		editingView.addObserver( FocusObserver );

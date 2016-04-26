@@ -68,12 +68,17 @@ export default class InlineCreator extends StandardCreator {
 		const editableName = editor.firstElementName;
 		const editable = new Editable( editor, editableName );
 
+		editor.document.createRoot( editableName, '$root' );
+
 		editor.editables.add( editable );
 		editable.bindTo( editorElement );
-		editor.document.createRoot( editableName, '$root' );
 	}
 
 	_createToolbars() {
+		if ( !this.editor.config.toolbar ) {
+			return;
+		}
+
 		const editableName = this.editor.firstElementName;
 		const locale = this.editor.locale;
 

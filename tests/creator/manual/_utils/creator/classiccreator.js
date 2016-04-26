@@ -68,6 +68,10 @@ export default class ClassicCreator extends StandardCreator {
 	}
 
 	_createToolbar() {
+		if ( !this.editor.config.toolbar ) {
+			return;
+		}
+
 		const editor = this.editor;
 		const toolbarModel = new Model();
 		const toolbar = new Toolbar( toolbarModel, new ToolbarView( toolbarModel, editor.locale ), editor );
