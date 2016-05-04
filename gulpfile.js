@@ -14,11 +14,17 @@ const config = {
 		'src/lib/**'
 	]
 };
-
+const fs = require( 'fs' );
+const json = JSON.parse( fs.readFileSync( './package.json' ) );
 require( './dev/tasks/build/tasks' )( config );
-require( './dev/tasks/dev/tasks' )( config );
-require( './dev/tasks/lint/tasks' )( config );
-require( './dev/tasks/docs/tasks' )( config );
+
+// Check if gulp file is run in dev environment. It will be false when this repository is included as dependency of other project.
+if ( !json._id ) {
+	require( './dev/tasks/dev/tasks' )( config );
+	require( './dev/tasks/lint/tasks' )( config );
+	require( './dev/tasks/docs/tasks' )( config );
+
+	gulp.task( 'pre-commit', [ 'lint-staged' ] );
+}
 
 gulp.task( 'default', [ 'build' ] );
-gulp.task( 'pre-commit', [ 'lint-staged' ] );
