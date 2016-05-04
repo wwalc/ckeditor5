@@ -95,7 +95,7 @@ module.exports = ( config ) => {
 				 * @returns {Stream}
 				 */
 				packages( watch ) {
-					const dirs = utils.getPackages( config.ROOT_DIR );
+					const dirs = utils.getPackages( config.PACKAGES_DIR );
 
 					const streams = dirs.map( ( dirPath ) => {
 						const glob = path.join( dirPath, '@(src|tests)', '**', '*' );
@@ -118,7 +118,7 @@ module.exports = ( config ) => {
 			 * @returns {Stream}
 			 */
 			sass() {
-				const dirs = utils.getPackages( config.ROOT_DIR );
+				const dirs = utils.getPackages( config.PACKAGES_DIR );
 
 				const streams = dirs.map( ( dirPath ) => {
 					const glob = path.join( dirPath, themesGlob );
@@ -132,7 +132,7 @@ module.exports = ( config ) => {
 			},
 
 			icons() {
-				const dirs = utils.getPackages( config.ROOT_DIR );
+				const dirs = utils.getPackages( config.PACKAGES_DIR );
 
 				const streams = dirs.map( ( dirPath ) => {
 					const glob = path.join( dirPath, iconsGlob );
@@ -257,7 +257,7 @@ module.exports = ( config ) => {
 			 */
 			sass( options ) {
 				if ( options.watch ) {
-					const glob = path.join( config.ROOT_DIR, 'node_modules', 'ckeditor5-*', themesGlob );
+					const glob = path.join( config.PACKAGES_DIR, 'node_modules', 'ckeditor5-*', themesGlob );
 
 					// Initial build.
 					build();

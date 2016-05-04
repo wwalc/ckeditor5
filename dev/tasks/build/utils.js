@@ -392,20 +392,20 @@ const utils = {
 	/**
 	 * Finds all CKEditor5 package directories in "node_modules" folder.
 	 *
-	 * @param {String} rootDir A root directory containing "node_modules" folder.
+	 * @param {String} packagesDir A root directory containing "node_modules" folder.
 	 * @returns {Array} Array of ckeditor5-* package directory paths.
 	 */
-	getPackages( rootDir ) {
+	getPackages( packagesDir ) {
 		// Find all CKEditor5 package directories. Resolve symlinks so we watch real directories
 		// in order to workaround https://github.com/paulmillr/chokidar/issues/419.
-		return fs.readdirSync( path.join( rootDir, 'node_modules' ) )
+		return fs.readdirSync( path.join( packagesDir, 'node_modules' ) )
 			// Look for ckeditor5-* directories.
 			.filter( fileName => {
 				return fileName.indexOf( 'ckeditor5-' ) === 0;
 			} )
 			// Resolve symlinks and keep only directories.
 			.map( fileName => {
-				let filePath = path.join( rootDir, 'node_modules', fileName );
+				let filePath = path.join( packagesDir, 'node_modules', fileName );
 				let stat = fs.lstatSync( filePath );
 
 				if ( stat.isSymbolicLink() ) {
