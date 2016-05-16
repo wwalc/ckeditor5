@@ -8,7 +8,7 @@ const fs = require( 'fs' );
 const json = JSON.parse( fs.readFileSync( './package.json' ) );
 
 // Check if gulp file is run in dev environment. It will be false when this repository is included as dependency of other project.
-let isDev = !json._id;
+const isDev = !json._id;
 
 const config = {
 	ROOT_DIR: '.',

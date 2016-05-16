@@ -11,8 +11,8 @@
     "babel-core": "^6.4.0",
     "babel-plugin-transform-es2015-modules-amd": "^6.1.18",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.2.0",
+    "ckeditor5-engine": "github:ckeditor/ckeditor5-engine#t/395",
     "ckeditor5-delete": "ckeditor/ckeditor5-delete",
-    "ckeditor5-engine": "ckeditor/ckeditor5-engine",
     "ckeditor5-enter": "ckeditor/ckeditor5-enter",
     "ckeditor5-theme-lark": "ckeditor/ckeditor5-theme-lark",
     "ckeditor5-ui": "ckeditor/ckeditor5-ui",
@@ -38,7 +38,6 @@
     "gulp-svg-sprite": "^1.2.19",
     "gulp-util": "^3.0.7",
     "gulp-watch": "^4.3.5",
-    "guppy-pre-commit": "^0.3.0",
     "inquirer": "^0.11.0",
     "merge-stream": "^1.0.0",
     "minimist": "^1.2.0",
@@ -50,7 +49,6 @@
     "through2": "^2.0.0"
   },
   "devDependencies": {
-    "almond": "^0.3.0",
     "benderjs": "^0.4.1",
     "benderjs-chai": "^0.2.0",
     "benderjs-coverage": "^0.2.1",
@@ -62,6 +60,7 @@
     "jsdoc": "^3.4.0",
     "jshint": "^2.9.1",
     "jshint-reporter-jscs": "^0.1.0",
+    "guppy-pre-commit": "^0.3.0",
     "mocha": "^2.2.5",
     "mockery": "^1.4.0",
     "ncp": "^2.0.0",
