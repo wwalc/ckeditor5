@@ -32,18 +32,11 @@ const utils = {
 	 */
 	benderLauncherCode:
 `
-	var defer = bender.defer();
-	require( [ 'tests', '/tests/engine/_utils/view.js', '/tests/engine/_utils/model.js' ], 
-	function( tests, view, model ) { 
-		bender.view = view;
-		bender.model = model;
-		defer();
-	}, 
-	function( err ) {
-		// The problem with Require.JS is that there are no stacktraces if we won't log this.
-		console.error( err );
-		console.log( err.stack );
-	} );
+require( [ 'tests' ], bender.defer(), function( err ) {
+	// The problem with Require.JS is that there are no stacktraces if we won't log this.
+	console.error( err );
+	console.log( err.stack );
+} );
 `,
 
 	/**
@@ -116,7 +109,7 @@ const utils = {
 				conversionPipes.push(
 					filterTests,
 					transpileTests,
-					utils.appendBenderLauncher(),
+					format === 'amd' ? utils.appendBenderLauncher() : utils.noop(),
 					filterTests.restore
 				);
 			}
@@ -172,7 +165,7 @@ const utils = {
 			plugins: utils.getBabelPlugins( format ),
 			// Ensure that all paths ends with '.js' because Require.JS (unlike Common.JS/System.JS)
 			// will not add it to module names which look like paths.
-			resolveModuleSource: utils.appendModuleExtension
+			resolveModuleSource: format == 'cjs' ? utils.resolveModuleSource : utils.appendModuleExtension
 		};
 	},
 
@@ -185,7 +178,7 @@ const utils = {
 	getBabelOptionsForTests( format ) {
 		return {
 			plugins: utils.getBabelPlugins( format ),
-			resolveModuleSource: utils.appendModuleExtension,
+			resolveModuleSource: format == 'cjs' ? utils.resolveModuleSource : utils.appendModuleExtension,
 			moduleIds: true,
 			moduleId: 'tests'
 		};
@@ -455,8 +448,12 @@ const utils = {
 		function renderThemeFromEntryPoints( callback ) {
 			gutil.log( `Compiling '${ gutil.colors.cyan( fileName ) }' from ${ gutil.colors.cyan( paths.length ) } entry points...` );
 
-			// Note: Make sure windows\\style\\paths are preserved.
-			const dataToRender = paths.map( p => `@import "${ p.replace( /\\/g, '\\\\' ) }";` )
+			// Sort to make sure theme is the very first SASS to build. Otherwise,
+			// packages using mixins and variables from that theme will throw errors
+			// because such are not available at this stage of compilation.
+			const dataToRender = paths.sort( a => -a.indexOf( 'ckeditor5-theme' ) )
+				// Make sure windows\\style\\paths are preserved.
+				.map( p => `@import "${ p.replace( /\\/g, '\\\\' ) }";` )
 				.join( '\n' );
 
 			try {
@@ -599,6 +596,35 @@ const utils = {
 				} )
 			);
 		} );
+	},
+
+	/**
+	 * Resolves CommonJS module source path.
+	 *
+	 * @param {String} source Module path passed to require() method.
+	 * @param {String} file Path to a file where require() method is called.
+	 * @returns {String} Fixed module path.
+	 */
+	resolveModuleSource( source, file ) {
+		// If path is relative - leave it as is.
+		if ( !path.isAbsolute( source ) ) {
+			return source;
+		}
+
+		// Find relative path of test file from cwd directory.
+		let testFile = path.relative( process.cwd(), file );
+
+		// Append `/` as all files uses it as root inside transpiled versions.
+		testFile = path.join( path.sep, testFile );
+
+		// Find relative path from test file to source.
+		let relativePath = path.relative( path.dirname( testFile ), path.dirname( source ) );
+		relativePath = path.join( relativePath, path.basename( source ) );
+
+		// Convert windows path to posix.
+		relativePath = relativePath.replace( /\\/g, '/' );
+
+		return utils.appendModuleExtension( ( relativePath.startsWith( '../' ) ? '' : './' ) + relativePath );
 	}
 };
 

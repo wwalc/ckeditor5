@@ -6,12 +6,12 @@
 'use strict';
 
 import Plugin from '/ckeditor5/plugin.js';
-import Editor from '/ckeditor5/editor.js';
+import Editor from '/ckeditor5/editor/editor.js';
 
 let editor;
 
 before( () => {
-	editor = new Editor( document.body.appendChild( document.createElement( 'div' ) ) );
+	editor = new Editor();
 } );
 
 describe( 'constructor', () => {
