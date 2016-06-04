@@ -11,6 +11,7 @@
     "babel-core": "^6.4.0",
     "babel-plugin-transform-es2015-modules-amd": "^6.1.18",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.2.0",
+    "babel-preset-es2015-rollup": "^1.1.1",
     "ckeditor5-basic-styles": "ckeditor/ckeditor5-basic-styles",
     "ckeditor5-creator-classic": "ckeditor/ckeditor5-creator-classic",
     "ckeditor5-engine": "github:ckeditor/ckeditor5-engine#t/395",

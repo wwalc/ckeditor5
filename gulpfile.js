@@ -12,8 +12,9 @@ const isDev = !json._id;
 
 const config = {
 	ROOT_DIR: '.',
-	BUILD_DIR: 'build',
-	BUNDLE_DIR: 'bundle',
+	PACKAGES_DIR: isDev ? '.' : '../..',
+	BUILD_DIR: isDev ? 'build' : '../../build',
+	BUNDLE_DIR: isDev ? 'bundle' : '../../bundle',
 	WORKSPACE_DIR: '..',
 
 	// Files ignored by jshint and jscs tasks. Files from .gitignore will be added automatically during tasks execution.
