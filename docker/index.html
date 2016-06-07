@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>CKEditor 5 demo</title>
+
+	<link rel="stylesheet" href="/css/ckeditor.css">
+
+	<script type="text/javascript" src="/js/ckeditor.js"></script>
+</head>
+<body>
+
+<div id="editor">
+	<p>Hello from <strong>Docker</strong>!</p>
+</div>
+
+<script type="text/javascript">
+	ClassicEditor.create( document.querySelector( '#editor' ) ).then( function( newEditor ) {
+		console.log( 'Editor was initialized', newEditor );
+		console.log( 'You can now play with it using global `editor` variable.' );
+
+		window.editor = newEditor;
+	} ).catch( function( err ) {
+		console.error( err.stack );
+	} );
+</script>
+
+</body>
+</html>

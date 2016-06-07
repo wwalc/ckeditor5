@@ -1,0 +1,25 @@
+worker_processes auto;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    # Don't show server info
+    server_tokens off;
+
+    server {
+        listen 80;
+
+        location / {
+            # Make CSS work
+            include /etc/nginx/mime.types;
+
+            # Use static index.html
+            index index.html;
+
+            # Use data as server root
+            root /data/public/;
+        }
+    }
+}
