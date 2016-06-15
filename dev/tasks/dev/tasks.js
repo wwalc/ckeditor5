@@ -29,13 +29,14 @@ module.exports = ( config ) => {
 	const tasks = {
 		updateRepositories() {
 			const options = minimist( process.argv.slice( 2 ), {
-				boolean: [ 'npm-update' ],
+				boolean: [ 'npm-update', 'pull' ],
 				default: {
-					'npm-update': false
+					'npm-update': false,
+					'pull': true
 				}
 			} );
 
-			return updateTask( installTask, ckeditor5Path, packageJSON, config.WORKSPACE_DIR, options[ 'npm-update' ] );
+			return updateTask( installTask, ckeditor5Path, packageJSON, config.WORKSPACE_DIR, options[ 'npm-update' ], !options.pull  );
 		},
 
 		checkStatus() {

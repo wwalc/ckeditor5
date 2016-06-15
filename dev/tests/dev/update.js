@@ -50,7 +50,7 @@ describe( 'dev-update', () => {
 			}
 		};
 
-		updateTask( installTask, ckeditor5Path, json, workspaceRoot, true );
+		updateTask( installTask, ckeditor5Path, json, workspaceRoot, true, false );
 
 		const repoPath1 = path.join( workspaceAbsolutePath, dirs[ 0 ] );
 		const repoPath2 = path.join( workspaceAbsolutePath, dirs[ 1 ] );
@@ -65,6 +65,44 @@ describe( 'dev-update', () => {
 		sinon.assert.calledTwice( spies.pull );
 		sinon.assert.calledWithExactly( spies.pull.firstCall, repoPath1, 'master' );
 		sinon.assert.calledWithExactly( spies.pull.secondCall, repoPath2, 'new-branch' );
+
+		sinon.assert.calledThrice( spies.npmUpdate );
+		sinon.assert.calledWithExactly( spies.npmUpdate.firstCall, path.join( workspaceAbsolutePath, dirs[ 0 ] ) );
+		sinon.assert.calledWithExactly( spies.npmUpdate.secondCall, path.join( workspaceAbsolutePath, dirs[ 1 ] ) );
+		sinon.assert.calledWithExactly( spies.npmUpdate.thirdCall, ckeditor5Path );
+
+		sinon.assert.calledOnce( spies.getCKE5Symlinks );
+		sinon.assert.notCalled( spies.removeSymlink );
+		sinon.assert.notCalled( installTask );
+	} );
+
+	it( 'should only check out dev repositories (without pull)', () => {
+		const dirs = [ 'ckeditor5-core', 'ckeditor5-devtest' ];
+		const installTask = sinon.spy();
+		spies.getDirectories = sinon.stub( tools, 'getCKE5Directories' ).returns( dirs );
+		spies.getCKE5Symlinks = sinon.stub( tools, 'getCKE5Symlinks' ).returns( [] );
+
+		const json = {
+			dependencies: {
+				'ckeditor5-core': 'ckeditor/ckeditor5-core',
+				'ckeditor5-devtest': 'ckeditor/ckeditor5-devtest#new-branch',
+				'other-plugin': '1.2.3'
+			}
+		};
+
+		updateTask( installTask, ckeditor5Path, json, workspaceRoot, true, true );
+
+		const repoPath1 = path.join( workspaceAbsolutePath, dirs[ 0 ] );
+		const repoPath2 = path.join( workspaceAbsolutePath, dirs[ 1 ] );
+
+		sinon.assert.calledThrice( spies.fetchAll );
+		sinon.assert.calledWithExactly( spies.fetchAll.firstCall, ckeditor5Path );
+		sinon.assert.calledWithExactly( spies.fetchAll.secondCall, repoPath1 );
+		sinon.assert.calledWithExactly( spies.fetchAll.thirdCall, repoPath2 );
+		sinon.assert.calledTwice( spies.checkout );
+		sinon.assert.calledWithExactly( spies.checkout.firstCall, repoPath1, 'master' );
+		sinon.assert.calledWithExactly( spies.checkout.secondCall, repoPath2, 'new-branch' );
+		sinon.assert.notCalled( spies.pull );
 
 		sinon.assert.calledThrice( spies.npmUpdate );
 		sinon.assert.calledWithExactly( spies.npmUpdate.firstCall, path.join( workspaceAbsolutePath, dirs[ 0 ] ) );
@@ -91,7 +129,7 @@ describe( 'dev-update', () => {
 			}
 		};
 
-		updateTask( installTask, ckeditor5Path, json, workspaceRoot, true );
+		updateTask( installTask, ckeditor5Path, json, workspaceRoot, true, false );
 
 		const repoPath1 = path.join( workspaceAbsolutePath, dirs[ 0 ] );
 		const repoPath2 = path.join( workspaceAbsolutePath, dirs[ 1 ] );
@@ -133,7 +171,7 @@ describe( 'dev-update', () => {
 			}
 		};
 
-		updateTask( installTask, ckeditor5Path, json, workspaceRoot, true );
+		updateTask( installTask, ckeditor5Path, json, workspaceRoot, true, false );
 
 		const repoPath1 = path.join( workspaceAbsolutePath, dirs[ 0 ] );
 		const repoPath2 = path.join( workspaceAbsolutePath, dirs[ 1 ] );
@@ -181,7 +219,7 @@ describe( 'dev-update', () => {
 			}
 		};
 
-		updateTask( installTask, ckeditor5Path, json, workspaceRoot, false );
+		updateTask( installTask, ckeditor5Path, json, workspaceRoot, false, false );
 
 		const repoPath1 = path.join( workspaceAbsolutePath, dirs[ 0 ] );
 		const repoPath2 = path.join( workspaceAbsolutePath, dirs[ 1 ] );
@@ -223,7 +261,7 @@ describe( 'dev-update', () => {
 			}
 		};
 
-		updateTask( installTask, ckeditor5Path, json, workspaceRoot, false );
+		updateTask( installTask, ckeditor5Path, json, workspaceRoot, false, false );
 
 		sinon.assert.calledOnce( spies.fetchAll );
 		sinon.assert.calledWithExactly( spies.fetchAll.firstCall, ckeditor5Path );

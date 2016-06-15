@@ -28,9 +28,10 @@ const log = require( '../utils/log' );
  * @param {Object} packageJSON Parsed package.json file from CKEditor5 repository.
  * @param {String} workspaceRoot Relative path to workspace root.
  * @param {Boolean} runNpmUpdate When set to true `npm update` will be executed inside each plugin repository
+ * @param {Boolean} checkOutOnly When set to true `git pull` will be executed inside each plugin repository
  * and inside CKEditor 5 repository.
  */
-module.exports = ( installTask, ckeditor5Path, packageJSON, workspaceRoot, runNpmUpdate ) => {
+module.exports = ( installTask, ckeditor5Path, packageJSON, workspaceRoot, runNpmUpdate, checkOutOnly ) => {
 	const workspaceAbsolutePath = path.join( ckeditor5Path, workspaceRoot );
 
 	// Fetch main repository
@@ -56,8 +57,10 @@ module.exports = ( installTask, ckeditor5Path, packageJSON, workspaceRoot, runNp
 				log.out( `Checking out ${ urlInfo.name } to ${ urlInfo.branch }...` );
 				git.checkout( repositoryAbsolutePath, urlInfo.branch );
 
-				log.out( `Pulling changes to ${ urlInfo.name }...` );
-				git.pull( repositoryAbsolutePath, urlInfo.branch );
+				if ( !checkOutOnly ) {
+					log.out( `Pulling changes to ${ urlInfo.name }...` );
+					git.pull( repositoryAbsolutePath, urlInfo.branch );
+				}
 
 				if ( runNpmUpdate ) {
 					log.out( `Running "npm update" in ${ urlInfo.name }...` );
