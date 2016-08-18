@@ -23,7 +23,8 @@ const config = {
 		ckeditor: {
 			path: '.',
 			files: [
-				'node_modules/requirejs/require.js'
+				'node_modules/requirejs/require.js',
+				'node_modules/babel-polyfill/dist/polyfill.js'
 			],
 			basePath: '/apps/ckeditor/build/modules/amd/'
 		}
