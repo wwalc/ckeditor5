@@ -7,6 +7,7 @@
 
 'use strict';
 
+const path = require( 'path' );
 const gulp = require( 'gulp' );
 const runSequence = require( 'run-sequence' );
 
@@ -168,4 +169,20 @@ gulp.task( 'docs:clean', docsBuilder.clean );
 gulp.task( 'docs:build', docsBuilder.buildDocs );
 gulp.task( 'docs:editors', [ 'compile:js:esnext', 'compile:themes:esnext' ], () => {
 	return docsBuilder.buildEditorsForSamples( getCKEditor5PackagesPaths(), config.DOCUMENTATION.SAMPLES );
+} );
+
+const KarmaServer = require( 'karma' ).Server;
+
+// This task needs compiled (esnext) editor.
+// Run `gulp compile:js:esnext` before.
+gulp.task( 'test', ( done ) => {
+	// Todo: it will be moved directly to `ckeditor5-dev-tests` package.
+	const args = ckeditor5DevCompiler.utils.parseArguments();
+	const karmaConfig = require( './dev/karma.conf' );
+	const karmaParameters = {
+		rootPath: path.resolve( __dirname, config.MODULE_DIR.esnext ),
+		watch: args.watch
+	};
+
+	new KarmaServer( karmaConfig( karmaParameters ), done ).start();
 } );
