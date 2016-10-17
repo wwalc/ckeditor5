@@ -130,7 +130,7 @@ module.exports = ( options ) => {
 		],
 
 		// See: https://github.com/webpack/karma-webpack/issues/8#issuecomment-40056889
-		browserNoActivityTimeout: 15000
+		browserNoActivityTimeout: 20000
 	};
 
 	if ( options.watch ) {
